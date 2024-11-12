@@ -1,2 +1,2 @@
-# NFA_to_DFA_Convert
+# NFA to DFA
 Code to convert an NFA to a DFA given an input file.

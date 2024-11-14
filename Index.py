@@ -7,17 +7,29 @@ file = open("Test.txt", "r")
 # reading the file 
 data = file.read() 
 
-# Label what is being printed
-print('The formal description your input is: ')
+# Print a newline to make output look nice and label what is being printed
+print('\n')
+print('The formal description of your NFA is: ')
 
 # When theres a newline ('\n'), make new element. 
-formalDesc = data.split("\n") 
+nfaDesc = data.split("\n") 
 
 # Printing elements into list
-print(formalDesc) 
+print(nfaDesc) 
 file.close() 
 
 # Test case Demo
-if formalDesc[0] == 'q0 q1 q2':
+if nfaDesc[0] == 'q0 q1 q2':
     print('Its in proper form')
 
+# Print a newline to make output look nice
+print('\n')
+
+# Label what is being printed
+print('The formal description of your DFA is: ')
+# Dummied up for demo
+dfaDesc = nfaDesc
+print(dfaDesc) 
+
+# Print a newline to make output look nice
+print('\n')

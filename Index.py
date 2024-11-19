@@ -13,7 +13,7 @@ print('The formal description of your NFA is: ')
 
 #  ---------------Creating elements of NFA formal description---------------
 # When theres a newline ('\n'), make new element. 
-nfaDesc = data.split("\n") 
+nfaDesc = data.split("\n")
 # Split formal description into their own arrays
 nfaStates = nfaDesc[0].split(' ')
 nfaAlpha = nfaDesc[1].split(' ')
@@ -32,8 +32,12 @@ if nfaDesc[0] == 'q0 q1 q2':
 print('\n')
 print('The formal description of your DFA is: ')
 
-# Dummied up for demo
+# Copy over changed elements
 dfaDesc = nfaDesc
+dfaStates = nfaStates
+dfaAlpha = nfaAlpha
+dfaStart = nfaStart
+dfaEnd = nfaEnd
 print(dfaDesc) 
 
 # Print a newline to make output look nice

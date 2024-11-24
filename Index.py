@@ -1,54 +1,54 @@
-#Imports
-import numpy
-
+import json
+from collections import OrderedDict
+import numpy as np
 # NFA -> DFA Converter
 # Main file with code
 # By Malory Morey
 
-# Openingthe file in read mode 
-file = open("Test.txt", "r") 
-data = file.read() 
+# Opening and loading the json input file
+with open('input.json') as file:
+    input = json.load(file)
 
 # Print a newline to make output look nice and label what is being printed
 print('\n')
 print('The formal description of your NFA is: ')
+#  ---------------Creating elements of DFA formal description---------------
+dfaStates = 2 ** input["states"]
+dfaAlpha = input["alpha"]
+dfaStart = input["start"]
+dfaTransFunc = []
+dfaEnd = []
 
+nfaTrans = {}
+dfaTrans = {}
 
-#  ---------------Creating elements of NFA formal description---------------
-# When theres a newline ('\n'), make new element. 
-nfaDesc = data.split("\n")
+#  ---------------Set up NFA & DFA transitions---------------
+for transition in input["transFunc"]:
+    nfaTrans[(transition[0], transition[1])] = transition[2]
 
-# Split formal description into their own arrays
-nfaStates = numpy.array(i, nfaDesc[0].split(' '))
-nfaAlpha = numpy.array(1, nfaDesc[1].split(' '))
-nfaStart = numpy.array(nfaDesc[3].split(' '))
-nfaEnd = numpy.array(nfaDesc[4].split(' '))
-
+Q = []
+Q.append((dfaStart,))
 # Printing elements into list
-print(nfaDesc) 
-file.close() 
+print() 
+
 
 # Test case Demo
-if nfaDesc[0] == 'q0 q1 q2':
-    print('Its in proper form')
+
+
 # ---------------Converting elements of DFA formal description---------------
 #Loop through states to make nfa states
-for i in nfaStates:
-    #dfaStates[i] = nfaStates[i]
-    #if i == nfaStates.length():
-    dfaStates[i] = nfaStates[i] + nfaStates[i+1]
-        
 
 
 
-# ---------------Printing elements of DFA formal description---------------
-# Print a newline to make output look nice and label what is being printed
-print('\n')
-print('The formal description of your DFA is: ')
+# ---------------Printing elements of DFA formal description in a new json file---------------
+dfa = OrderedDict()
+dfa["states"] = dfaStates
+dfa["alpha"] = dfaAlpha
+dfa["transFunc"] = dfaTransFunc
+dfa["start"] = dfaStart
+dfa["end"] = dfaEnd
 
-# Copy over changed elements
-print(dfaStates)
-print(dfaDesc) 
-
+output = open('output.json', 'w')
+json.dump(dfa, output, separators = (',\t', ':'))
 # Print a newline to make output look nice
 print('\n')

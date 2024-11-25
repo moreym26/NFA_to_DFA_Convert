@@ -1,8 +1,7 @@
 import json
 from collections import OrderedDict
-import numpy as np
 # NFA -> DFA Converter
-# Main file with code
+# Main file Aith code
 # By Malory Morey
 
 # Opening and loading the json input file
@@ -10,17 +9,17 @@ with open('input.json') as file:
     input = json.load(file)
 
 #  ---------------Creating elements of DFA formal description---------------
-dfaStates = 2 ** input["states"]
-dfaAlpha = input["alpha"]
-dfaStart = input["start"]
-dfaTransFunc = []
-dfaEnd = []
+dfaStates = 2 ** input["states"] # Number of states is 2^(number of NFA states)
+dfaAlpha = input["alpha"]        # Alphabet
+dfaStart = input["start"]        # Start state
+dfaTransFunc = []                # Transition function
+dfaEnd = []                      # End/accept state
 
-# make empty transitions for each to manipulate
+# make empty transitions for both NFA and DFA to manipulate beloA
 nfaTrans = {}
 dfaTrans = {}
 
-#  ------------------Set up NFA & DFA transitions------------------
+#  ------------------Set up NFA & DFA transitions in proper form------------------
 for transition in input["transFunc"]:
     nfaTrans[(transition[0], transition[1])] = transition[2]
 
@@ -29,34 +28,42 @@ Q = []
 Q.append((dfaStart,))
 
 # ---------------Converting NFA transitions to DFA transitions---------------
-for inState in Q:
-    for symbol in dfaAlpha:
-        if len(inState) == 1 and (inState[0], symbol) in nfaTrans:
-            dfaTrans[(inState, symbol)] = nfaTrans[(inState[0], symbol)]
-            if tuple(dfaTrans[(inState, symbol)]) not in Q:
-                Q.append(tuple(dfaTrans[(inState, symbol)]))
-        
+# Go through states in q'
+for currState in Q:
+    # Go through alphabet for each alphabet symbol in NFA alphabet
+    for alphaTrans in dfaAlpha:
+        # If the list is only 1 long, then just use NFA transition from the table
+        if len(currState) == 1 and (currState[0], alphaTrans) in nfaTrans:
+            dfaTrans[(currState, alphaTrans)] = nfaTrans[(currState[0], alphaTrans)]
+            #If the transition isn't in q' add it
+            if tuple(dfaTrans[(currState, alphaTrans)]) not in Q:
+                Q.append(tuple(dfaTrans[(currState, alphaTrans)]))
+        # Else if the list is not of length 1 then make neA transitions
         else:
-            end = []
-            lastEnd = []
+            # Make more empty vars to fill with new states
+            acceptStates = []
+            finalState = []
             
-            for state in inState:
-                if (state, symbol) in nfaTrans and nfaTrans[(state, symbol)]:
-                    end.append(nfaTrans[(state, symbol)])
+            #Loop through your iteration of q', if add it to state
+            for state in currState:
+                if (state, alphaTrans) in nfaTrans and nfaTrans[(state, alphaTrans)]:
+                    acceptStates.append(nfaTrans[(state, alphaTrans)])
             
-            if end:
-                for x in end:
+            # loop through states and add it if not there
+            if acceptStates:
+                for x in acceptStates:
                     for val in x:
-                        if val not in lastEnd:
-                            lastEnd.append(val)
+                        if val not in finalState:
+                            finalState.append(val)
+                # Add neA transitions to final
+                dfaTrans[(currState, alphaTrans)] = finalState
                 
-                dfaTrans[(inState, symbol)] = lastEnd
-                
-                if tuple(lastEnd) not in Q:
-                    Q.append(tuple(lastEnd))
+                # if the accepting states is not in q' then add it
+                if tuple(finalState) not in Q:
+                    Q.append(tuple(finalState))
 
 
-#Remake transition function
+#Remake DFA transition function
 for key, val in dfaTrans.items():
     list = [[key[0], key[1], val]]
     dfaTransFunc.extend(list)
@@ -67,21 +74,20 @@ for state in Q:
         dfaEnd.append(state)
 
 
-# ---------Putting elements of DFA formal description in a dictionary---------
+# ---------Putting elements of DFA formal description in a list---------
 dfa = OrderedDict()
 dfa["states"] = dfaStates
 dfa["alpha"] = dfaAlpha
 dfa["transFunc"] = dfaTransFunc
 dfa["start"] = dfaStart
-dfa["end"] = dfaEnd
+dfa["acceptStates"] = dfaEnd
 
-# ---------Putting elements of DFA formal description in a new json file---------
-
+# ---------Putting elements of DFA formal description in a neA json file---------
 output = open('output.json', 'w')
 json.dump(dfa, output, separators = (',\t', ':'))
 
 
-# Print a newline to make output look nice
-# Print a success message with directions for user
+# Print a neAline to make output look nice
+# Print a success message Aith directions for user
 print('\n')
 print('NFA => DFA conversion succesful. Please see the output.json file with your new DFA.')

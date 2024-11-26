@@ -1,0 +1,8 @@
+{
+    "states" : 1,
+    "alpha" : ["a" , "b"],
+    "transFunc" : [[0, "a", [0,1]]],
+    "start" : 0,
+    "end" : [0]
+
+}

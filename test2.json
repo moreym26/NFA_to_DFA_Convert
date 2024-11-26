@@ -1,5 +1,5 @@
 {
-    "states" : 2,
+    "states" : 100000,
     "alpha" : ["a" , "b"],
     "transFunc" : [[0, "a", [0,1]],[0, "b", [0]]],
     "start" : 0,

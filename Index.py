@@ -19,7 +19,7 @@ dfaEnd = []                      # End/accept state
 nfaTrans = {}
 dfaTrans = {}
 
-#  ------------------Set up NFA & DFA transitions in proper form------------------
+#  ------------------Set up NFA & DFA transitions in proper form-----------
 for transition in input["transFunc"]:
     nfaTrans[(transition[0], transition[1])] = transition[2]
 
@@ -38,7 +38,7 @@ for currState in Q:
             #If the transition isn't in q' add it
             if tuple(dfaTrans[(currState, alphaTrans)]) not in Q:
                 Q.append(tuple(dfaTrans[(currState, alphaTrans)]))
-        # Else if the list is not of length 1 then make neA transitions
+        # Else if the list is not of length 1 then make new transitions
         else:
             # Make more empty vars to fill with new states
             acceptStates = []
@@ -55,7 +55,7 @@ for currState in Q:
                     for val in x:
                         if val not in finalState:
                             finalState.append(val)
-                # Add neA transitions to final
+                # Add new transitions to final
                 dfaTrans[(currState, alphaTrans)] = finalState
                 
                 # if the accepting states is not in q' then add it
@@ -82,7 +82,7 @@ dfa["transFunc"] = dfaTransFunc
 dfa["start"] = dfaStart
 dfa["acceptStates"] = dfaEnd
 
-# ---------Putting elements of DFA formal description in a neA json file---------
+# ---------Putting elements of DFA formal description in a n json file---------
 output = open('output.json', 'w')
 json.dump(dfa, output, separators = (',\t', ':'))
 
